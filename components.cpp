@@ -20,13 +20,19 @@ Condition::Condition(bool *t)
 bool Condition::checkCondition()
 {
 	//std::cout<<"condition check: "<<*isTrue<<"\n";
-	return & isTrue;
+	return * isTrue;
 }
 
 
-Port::Port()
+Port::Port(int i)
 {
 	isEnabled = false;
+	ID = i;
+}
+
+int Port::getID()
+{
+	return ID;
 }
 
 void Port::enable()
@@ -48,14 +54,15 @@ Transition::Transition(State qStart1, State qDest1, Port port1, Condition * cond
 
 bool Transition::isValid(State currentState)
 {
-	std::cout<<qStart.getName()<<" to "<<qDest.getName()<<"\n";
-	std::cout<<"\t condition: "<<condition->checkCondition()<<"\n";
-	std::cout<<"\t port: "<<port.isEnabled<<"\n";
-	std::cout<<"\t states: "<<(currentState.getName() == qStart.getName())<<"\n";
-	std::cout<<"\t timer: "<<action.variables->timer<<"\n \n";
+	// std::cout<<qStart.getName()<<" to "<<qDest.getName()<<"\n";
+	// std::cout<<"\t condition: "<<condition->checkCondition()<<"\n";
+	// std::cout<<"\t port: "<<port.isEnabled<<"\n";
+	// std::cout<<"\t states: "<<(currentState.getName() == qStart.getName())<<"\n";
+	// std::cout<<"\t timer: "<<action.variables->timer<<"\n \n";
 	if((condition->checkCondition()) && (port.isEnabled) && (currentState.getName() == qStart.getName()))
 	{
-		//std::cout<<qStart.getName()<<" to "<<qDest.getName()<<"\n";
+		std::cout<<qStart.getName()<<" to "<<qDest.getName()<<"\n";
+		// std::cout<<"\t timer: "<<action.variables->timer<<"\n \n";
 		return true;
 	}
 	return false;
@@ -76,13 +83,9 @@ std::list<Transition> Transitions::getTransitionsList()
 	return transitionsList;
 }
 
-// SystemPort::SystemPort(FSM * m)
-// {
-// 	machine = m;
-// 	isEnabled = false;
-// }
-//
-// void SystemPort::execute()
-// {
-//
-// }
+bool Transition::findPort(int id)
+{
+	if(port.getID() == id)
+		return true;
+	return false;
+}

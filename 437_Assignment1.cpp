@@ -31,6 +31,13 @@ int main()
 	// std::cout<<&TIR<<"\n";
 	// std::cout<<&EC<<"\n";
 
+	WWIP = true;
+	WWIO = true;
+	TIR = true;
+	DIP = true;
+	DIO = true;
+
+
 
 	State off("off");				//name states same as member variable name
 	State idle("idle");
@@ -39,10 +46,10 @@ int main()
 	State drying("drying");
 
 
-	Port powerButton;
-	Port warmWashButton;
-	Port coldWashButton;
-	Port clockSignal;
+	Port powerButton(1);
+	Port warmWashButton(2);
+	Port coldWashButton(3);
+	Port clockSignal(4);
 
 	powerButton.enable();					//select ports to be enabled before declaring transitions
 	coldWashButton.disable();

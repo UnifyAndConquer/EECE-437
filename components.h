@@ -31,10 +31,14 @@ private:
 class Port
 {
 public:
-	Port();
+	Port(){};
+	Port(int i);
 	void enable();
 	void disable();
 	bool isEnabled;
+	int getID();
+private:
+	int ID;
 };
 
 // takes in pointer to function and "variables" template class, executes function on template class
@@ -42,7 +46,7 @@ template <class T>
 class Action
 {
 public:
-	Action(){}
+	Action(){};
 	Action(void (* foo)(T * vars), T * vars)
 	{
 		bar = foo;
@@ -67,6 +71,7 @@ public:
 	bool isValid(State currentState);
 	State next();
 	Action <Variables> getAction();
+	bool findPort(int id);
 
 private:
 	State qStart;
@@ -92,38 +97,5 @@ public:
 private:
 	std::list<Transition> transitionsList;
 };
-
-// class SystemPort
-// {
-// public:
-// 	SystemPort(FSM m);
-// 	void execute();
-// private:
-// 	FSM * machine;
-// 	bool isEnabled;
-// };
-//
-//
-// class SystemInteraction
-// {
-// public:
-// 	SystemInteraction(){};
-// 	void execute();		//executes the FSM transitions that enable the ports
-// private:
-// 	bool sysCondition;
-// 	SystemAction<SystemVariables> sysAction;
-// 	list<SystemPort> systemPortList;
-// };
-//
-//
-// class SystemAction
-// {
-// public:
-// 	SystemAction(){}
-// 	SystemAction(void (* foo)());
-// 	void execute();
-// private:
-// 	void (* bar)();
-// };
 
 #endif

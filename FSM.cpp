@@ -14,6 +14,17 @@ void FSM::reset(State resetState)
 	this->q0 = resetState;
 }
 
+bool FSM::findPort(int id)
+{
+	for(std::list<Transition>::iterator it = T.begin(); it != T.end(); it ++)
+	{
+		if(it->isValid(currentState) && it->findPort(id))
+		{
+			return true;
+		}
+	}
+}
+
 void FSM::run(int n)
 {
 	for(int i = 1; i <= n; i ++)
@@ -24,6 +35,7 @@ void FSM::run(int n)
 			{
 				currentState = it->next();
 				it->getAction().execute();
+				//break;
 			}
 		}
 	}

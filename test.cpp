@@ -21,7 +21,7 @@ int main()
 	int var = 39 ;								  //resp boolean
 	Fred Freddy(&var);							//resp condition class
 	var = 47;												//resp function called by Action class
-	std::cout<<Freddy.getX()<<"\n";
+	std::cout<<Freddy.getX()<<"\n"; //resp debugging
 
 	return 0;
 }
