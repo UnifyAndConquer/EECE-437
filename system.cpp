@@ -13,7 +13,7 @@ void System::run()
   for(sysInt = sysInteractions->begin(); sysInt != sysInteractions->end(); sysInt ++)
   {
     if(sysInt->isEnabled())
-      sysInt->execute();
+      sysInt->executeFunction();
   }
 }
 
@@ -23,20 +23,16 @@ bool SystemPort::isEnabled() {return machine->findPort(ID);}    //searches throu
 FSM * SystemPort::getMachine() {return machine;}
 
 //SYSTEMINTERACTION
-SystemInteraction::SystemInteraction(SystemCondition sc, SystemAction sa, std::vector<SystemPort> * sp)
-{
-  sysCondition = sc;
-  sysAction = sa;
-  sysPorts = sp;
-}
-void SystemInteraction::execute()
+SystemInteraction::SystemInteraction(SystemCondition sc, std::vector<SystemPort> * sp, void (* foo)())
+{sysCondition = sc; sysPorts = sp; bar = foo;}
+void SystemInteraction::executeFunction()
 {
   std::vector<SystemPort>::iterator sysPort;
   for(sysPort = sysPorts->begin(); sysPort != sysPorts->end(); sysPort ++)
   {
     sysPort->getMachine()->execute();
   }
-  sysAction.execute();
+  bar();
 }
 bool SystemInteraction::isEnabled()
 {
@@ -62,7 +58,3 @@ bool SystemInteraction::portsEnabled()
 //SYSTEMCONDITION
 SystemCondition::SystemCondition(bool * e) {predicate = e;}
 bool SystemCondition::checkCondition() {return * predicate;}
-
-//SYSTEMACTION
-SystemAction::SystemAction(void (*foo)()) {bar = foo;}
-void SystemAction::execute() {}

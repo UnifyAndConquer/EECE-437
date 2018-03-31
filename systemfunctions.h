@@ -3,6 +3,13 @@
 
 #include <iostream>
 
+struct SystemVariables
+{
+  bool a, b, c;
+};
+
+extern SystemVariables SV;
+
 // struct SystemVariables
 // {
 //

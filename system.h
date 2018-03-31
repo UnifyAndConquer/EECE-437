@@ -4,17 +4,18 @@
 #include <iostream>
 #include <vector>
 #include "FSM.h"
+#include "systemfunctions.h"
 
-class SystemAction
-{
-public:
-	SystemAction(){}
-	SystemAction(void (* foo)());
-	void execute();
-private:
-	void (* bar)();
-	Variables * V;
-};
+// class SystemAction
+// {
+// public:
+// 	SystemAction(){}
+// 	SystemAction(void (* foo)());
+// 	void execute();
+// private:
+// 	void (* bar)();
+// 	Variables * V;
+// };
 
 class SystemCondition
 {
@@ -39,14 +40,14 @@ private:
 class SystemInteraction
 {
 public:
-	SystemInteraction(SystemCondition sc, SystemAction sa, std::vector<SystemPort> * sp);
-	void execute();		   				//executes the FSM transitions that enable the ports
+	SystemInteraction(SystemCondition sc, std::vector<SystemPort> * sp, void (* foo)());
+	void executeFunction();		   				//executes the FSM transitions that enable the ports
 	bool isEnabled();
 	bool portsEnabled();
 private:
 	SystemCondition sysCondition;
-	SystemAction sysAction;
 	std::vector<SystemPort> *sysPorts;
+	void (* bar)();
 };
 
 class System

@@ -4,12 +4,13 @@
 #include "FSM.h"
 #include <time.h>
 
-//to do:
-// • make FSMPort and SystemPort inherit from the same abstract class Port
-
-//README: variables should be declared inside a struct called Variables, with the keyword extern, in a file called functions.h.
-//				conditions are declared using the COND_DECLARE macro, which takes the name of the variables instance, the name of the
-//				condition, and the expression over variables.
+//README:	• conditions are declared using the COND_DECLARE macro, which takes the name of the variables instance, the name of the
+//				  condition, and the expression over variables.
+//				• FSM functions are declared in a file called functions.h along with FSM variables, and system functions are declared
+//					in systemfunctions.h along with system variables.
+//        • FSM variables should be declared inside a struct called Variables, instantiated in functions.h with the keyword extern.
+//          System variables should be declared inside a struct called SystemVariables, instantiated in systemfunctions.h with the
+//          keyword extern.
 
 Variables V;				//global
 
@@ -20,7 +21,7 @@ int main()
 	V.greenLed = 9;
 
 	COND_DECLARE(V, warmWashInProgress, (V->timer < 6));	   	//declaration
-	warmWashInProgress WWIP(&V);  										    //instantiation
+	warmWashInProgress WWIP(&V);  										        //instantiation
 	COND_DECLARE(V, warmWashIsOver,(V->timer >= 6));					//slight inconvenience: pointer syntax should be used here
 	warmWashIsOver WWIO(&V);
 
