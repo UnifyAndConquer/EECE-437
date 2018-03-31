@@ -40,8 +40,8 @@ private:
 class SystemInteraction
 {
 public:
-	SystemInteraction(){};
-	void execute();		//executes the FSM transitions that enable the ports
+	SystemInteraction(SystemCondition sc, SystemAction sa, std::vector<SystemPort> * sp){};
+	void execute();		   				//executes the FSM transitions that enable the ports
 	bool isEnabled();
 	bool portsEnabled();
 private:

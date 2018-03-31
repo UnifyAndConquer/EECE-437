@@ -19,13 +19,18 @@ private:
 
 class Condition
 {
-public:
-	//Condition(){};
-	Condition(bool *t);
-	bool checkCondition();
-private:
-	bool * isTrue;
+	public:
+		virtual bool checkCondition() = 0;
 };
+
+#define COND_DECLARE(ConditionName, Expression)\
+ class ConditionName : public Condition {\
+ 	public:\
+		ConditionName(Variables * vars) { V = vars; }\
+		bool checkCondition() { return Expression; }\
+	private:\
+		Variables * V;\
+ };\
 
 
 class Port
@@ -42,35 +47,44 @@ private:
 };
 
 // takes in pointer to function and "variables" template class, executes function on template class
-template <class T>
-class Action
-{
-public:
-	Action(){};
-	Action(void (* foo)(T * vars), T * vars)
-	{
-		bar = foo;
-		variables = vars;
-	}
-	void execute()				//executes function passed to action in constructor
-	{
-		bar(variables);			//execute [bar]
-	}
-T * variables;
+// template <class T>
+// class Action
+// {
+// public:
+// 	Action(){};
+// 	Action(void (* foo)(T & vars), T & vars)
+// 	{
+// 		T & variables = vars;
+// 		bar = foo;
+// 	}
+// 	void execute()				//executes function passed to action in constructor
+// 	{
+// 		bar(V);			//execute [bar]
+// 	}
+// 	T * variables;
+// private:
+// 	void (* bar)(T & vars);			//temporary function pointer used in execute
+// };
 
-private:
-	void (* bar)(T * vars);			//temporary function pointer used in execute
 
-};
+// class Action			//kind of useless
+// {
+// public:
+// 	Action(){};
+// 	Action(void (* foo)()) {bar = foo;}
+// 	void execute() {bar();}
+// private:
+// 	void (* bar)();			//temporary function pointer used in execute
+// };
 
 class Transition
 {
 public:
 	Transition(){};
-	Transition(State qStart1, State qDest1, Port port1, Condition * condition1, Action <Variables> action1);
+	Transition(State qStart1, State qDest1, Port port1, Condition * condition1, void (* foo)());
 	bool isValid(State currentState);
 	State next();
-	Action <Variables> getAction();
+	void executeFunction();
 	bool findPort(int id);
 
 private:
@@ -78,7 +92,8 @@ private:
 	State qDest;
 	Port port;
 	Condition * condition;
-	Action <Variables> action;
+	void (* bar)();
+	//Action action;
 };
 
 class States: public std::list<State>		//w hek

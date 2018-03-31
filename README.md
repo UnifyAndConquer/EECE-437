@@ -1,2 +1,2 @@
 # EECE-437
-Assignments, class exercices and other misadventures
+Assignments, class exercises and other misadventures

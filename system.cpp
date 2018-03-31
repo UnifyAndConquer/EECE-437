@@ -1,6 +1,7 @@
 #include "system.h"
 #include "systemfunctions.h"
 
+//SYSTEM
 System::System(std::vector<SystemInteraction> *sysint)
 {
   sysInteractions = sysint;
@@ -16,6 +17,7 @@ void System::run()
   }
 }
 
+//SYSTEMPORT
 SystemPort::SystemPort(FSM * m)
 {
   machine = m;
@@ -28,13 +30,21 @@ int SystemPort::getID()
 
 bool SystemPort::isEnabled()
 {
-  return machine->findPort(ID); //searches through the FSM's valid transitions for a port equal to p
+  return machine->findPort(ID);     //searches through the FSM's valid transitions for a port equal to p by ID
 }
 
+//SYSTEMINTERACTION
+SystemInteraction::SystemInteraction(SystemCondition sc, SystemAction sa, std::vector<SystemPort> * sp)
+{
+  sysCondition = sc;
+  sysAction = sa;
+  sysPorts = sp;
+}
 
 void SystemInteraction::execute()
 {
-  //execute valid transitions then action
+  machine->execute();
+  sysAction.execute();
 }
 
 bool SystemInteraction::isEnabled()
@@ -58,6 +68,7 @@ bool SystemInteraction::portsEnabled()
   return true;
 }
 
+//SYSTEMCONDITION
 SystemCondition::SystemCondition(bool * e)
 {
   predicate = e;
@@ -68,6 +79,11 @@ bool SystemCondition::checkCondition()
   return * predicate;
 }
 
+//SYSTEMACTION
+SystemAction::SystemAction(void (*foo)())
+{
+  bar = foo;
+}
 // int main()
 // {
 //

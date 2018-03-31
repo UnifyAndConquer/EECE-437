@@ -4,39 +4,39 @@
 #include "FSM.h"
 #include <time.h>
 
+// • make FSMPort and SystemPort inherit from the same abstract class Port
+// • make Condition and Action two abstract classes from which the actual conditions and actions inherit
+//   and put a reference to the variables object as a data member of both of these
+// • shift everything to pointers
+
+Variables V;				//global
 
 int main()
 {
-	Variables * V = new Variables;					//declare variables inside struct V
-	V->timer = 10;
-	V->yellowLed = 1;
-	V->greenLed = 0;
+	V.timer = 0;
+	V.yellowLed = 0;
+	V.greenLed = 9;
 
-	bool WWIP, WWIO, CWIP, CWIO, DIP, DIO, TIR, EC;			//declare conditions
-	WWIP = V->timer < 10;
-	WWIO = V->timer >= 10;
-	CWIP = V->timer < 20;
-	CWIO = V->timer >= 20;
-	DIP = V->timer < 60;
-	DIO = V->timer >= 60;
-	TIR = V->timer == 0;
-	EC = true;
+	COND_DECLARE(warmWashInProgress, (V->timer < 6));				//slight inconvenience: pointer syntax should be used here
+	warmWashInProgress WWIP(&V);  										     //instantiation
+	COND_DECLARE(warmWashIsOver,(V->timer >= 6));
+	warmWashIsOver WWIO(&V);
 
-	// std::cout<<&WWIP<<"\n";
-	// std::cout<<&WWIO<<"\n";
-	// std::cout<<&CWIP<<"\n";
-	// std::cout<<&CWIO<<"\n";
-	// std::cout<<&DIP<<"\n";
-	// std::cout<<&DIO<<"\n";
-	// std::cout<<&TIR<<"\n";
-	// std::cout<<&EC<<"\n";
+	COND_DECLARE(coldWashInProgress,(V->timer < 8));
+	coldWashInProgress CWIP(&V);
+	COND_DECLARE(coldWashIsOver,(V->timer >=8));
+	coldWashIsOver CWIO(&V);
 
-	WWIP = true;
-	WWIO = true;
-	TIR = true;
-	DIP = true;
-	DIO = true;
+	COND_DECLARE(dryingInProgress,(V->timer < 12));
+	dryingInProgress DIP(&V);
+	COND_DECLARE(dryingIsOver,(V->timer >= 12));
+	dryingIsOver DIO(&V);
 
+	COND_DECLARE(timerIsReset,(V->timer == 0));
+	timerIsReset TIR(&V);
+
+	COND_DECLARE(trueCondition, true);
+	trueCondition TC(&V);
 
 
 	State off("off");				//name states same as member variable name
@@ -52,48 +52,27 @@ int main()
 	Port clockSignal(4);
 
 	powerButton.enable();					//select ports to be enabled before declaring transitions
-	coldWashButton.disable();
-	warmWashButton.enable();
+	coldWashButton.enable();
+	warmWashButton.disable();
 	clockSignal.enable();
-
-
-	Condition warmWashInProgress(&WWIP);			//takes in boolean expression as argument
-	Condition warmWashIsOver(&WWIO);
-
-	Condition coldWashInProgress(&CWIP);
-	Condition coldWashIsOver(&CWIO);
-
-	Condition dryingInProgress(&DIP);
-	Condition dryingIsOver(&DIO);
-
-	Condition timerIsReset(&TIR);
-	Condition emptyCondition(&EC);						//always true
-
-	//Action takes in user-implemented function and variable struct
-	Action <Variables> incrementTimerAction(incrementTimer, V);		//and turn on yellowLed, which means "in progress"
-	Action <Variables> resetTimerAction(resetTimer, V);
-	Action <Variables> initializeAction(initialize, V);				//reset timer and turn on greenLed, which means "ready to wash"
-	Action <Variables> powerOffAction(powerOff, V);					//turn off all LEDs
-	Action <Variables> emptyAction(empty, V);						//do nothing
-
 
 	//Transition(State, State, Port, Condition, Action)
 
-	Transition turnOn(off, idle, powerButton, &emptyCondition, initializeAction);
+	Transition turnOn(off, idle, powerButton, &TC, initialize);
 
-	Transition selectWarmWash(idle, warmWash, warmWashButton, &timerIsReset, emptyAction);
-	Transition continueWarmWash(warmWash, warmWash, clockSignal, &warmWashInProgress, incrementTimerAction);
+	Transition selectWarmWash(idle, warmWash, warmWashButton, &TIR, empty);
+	Transition continueWarmWash(warmWash, warmWash, clockSignal, &WWIP, incrementTimer);
 
-	Transition selectColdWash(idle, coldWash, coldWashButton, &timerIsReset, emptyAction);
-	Transition continueColdWash(coldWash, coldWash, clockSignal, &coldWashInProgress, incrementTimerAction);
+	Transition selectColdWash(idle, coldWash, coldWashButton, &TIR, empty);
+	Transition continueColdWash(coldWash, coldWash, clockSignal, &CWIP, incrementTimer);
 
-	Transition warmWashToDrying(warmWash, drying, clockSignal, &warmWashIsOver, resetTimerAction);
-	Transition coldWashToDrying(coldWash, drying, clockSignal, &coldWashIsOver, resetTimerAction);
+	Transition warmWashToDrying(warmWash, drying, clockSignal, &WWIO, resetTimer);
+	Transition coldWashToDrying(coldWash, drying, clockSignal, &CWIO, resetTimer);
 
-	Transition continueDrying(drying, drying, clockSignal, &dryingInProgress, incrementTimerAction);
-	Transition doneDrying(drying, idle, clockSignal, &dryingIsOver, resetTimerAction);
+	Transition continueDrying(drying, drying, clockSignal, &DIP, incrementTimer);
+	Transition doneDrying(drying, idle, clockSignal, &DIO, resetTimer);
 
-	Transition shutDown(idle, off, powerButton, &emptyCondition, powerOffAction);
+	Transition shutDown(idle, off, powerButton, &TC, powerOff);
 
 
 	States Q;
@@ -123,9 +102,9 @@ int main()
 
 	FSM washingMachine(Q, off, T);
 
-	washingMachine.run(1);
+	washingMachine.run(20);
 
-	std::cout<<V->timer<<"\n";
+	std::cout<<V.timer<<"\n";
 }
 
 	// powerButton.enable();

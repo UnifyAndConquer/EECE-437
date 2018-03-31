@@ -20,9 +20,11 @@ bool FSM::findPort(int id)
 	{
 		if(it->isValid(currentState) && it->findPort(id))
 		{
+			validTransitions->push_back(*it);
 			return true;
 		}
 	}
+	return false;
 }
 
 void FSM::run(int n)
@@ -34,9 +36,18 @@ void FSM::run(int n)
 			if(it->isValid(currentState))
 			{
 				currentState = it->next();
-				it->getAction().execute();
+				it->executeFunction();
 				//break;
 			}
 		}
+	}
+}
+
+void FSM::execute()
+{
+	for(std::vector<Transition>::iterator i = validTransitions->begin(); i != validTransitions->end(); i++)
+	{
+		currentState = i->next();
+		i->executeFunction();
 	}
 }
