@@ -4,10 +4,12 @@
 #include "FSM.h"
 #include <time.h>
 
+//to do:
 // • make FSMPort and SystemPort inherit from the same abstract class Port
-// • make Condition and Action two abstract classes from which the actual conditions and actions inherit
-//   and put a reference to the variables object as a data member of both of these
-// • shift everything to pointers
+
+//README: variables should be declared inside a struct called Variables, with the keyword extern, in a file called functions.h.
+//				conditions are declared using the COND_DECLARE macro, which takes the name of the variables instance, the name of the
+//				condition, and the expression over variables.
 
 Variables V;				//global
 
@@ -17,25 +19,25 @@ int main()
 	V.yellowLed = 0;
 	V.greenLed = 9;
 
-	COND_DECLARE(warmWashInProgress, (V->timer < 6));				//slight inconvenience: pointer syntax should be used here
-	warmWashInProgress WWIP(&V);  										     //instantiation
-	COND_DECLARE(warmWashIsOver,(V->timer >= 6));
+	COND_DECLARE(V, warmWashInProgress, (V->timer < 6));	   	//declaration
+	warmWashInProgress WWIP(&V);  										    //instantiation
+	COND_DECLARE(V, warmWashIsOver,(V->timer >= 6));					//slight inconvenience: pointer syntax should be used here
 	warmWashIsOver WWIO(&V);
 
-	COND_DECLARE(coldWashInProgress,(V->timer < 8));
+	COND_DECLARE(V, coldWashInProgress,(V->timer < 8));
 	coldWashInProgress CWIP(&V);
-	COND_DECLARE(coldWashIsOver,(V->timer >=8));
+	COND_DECLARE(V, coldWashIsOver,(V->timer >=8));
 	coldWashIsOver CWIO(&V);
 
-	COND_DECLARE(dryingInProgress,(V->timer < 12));
+	COND_DECLARE(V, dryingInProgress,(V->timer < 12));
 	dryingInProgress DIP(&V);
-	COND_DECLARE(dryingIsOver,(V->timer >= 12));
+	COND_DECLARE(V, dryingIsOver,(V->timer >= 12));
 	dryingIsOver DIO(&V);
 
-	COND_DECLARE(timerIsReset,(V->timer == 0));
+	COND_DECLARE(V, timerIsReset,(V->timer == 0));
 	timerIsReset TIR(&V);
 
-	COND_DECLARE(trueCondition, true);
+	COND_DECLARE(V, trueCondition, true);
 	trueCondition TC(&V);
 
 
@@ -106,19 +108,6 @@ int main()
 
 	std::cout<<V.timer<<"\n";
 }
-
-	// powerButton.enable();
-
-	// Transition turnOn(off, idle, powerButton, emptyCondition, initializeAction);
-
-	// std::cout<<powerButton.isEnabled<<"\n";
-	// std::cout<<emptyCondition.checkCondition()<<"\n";
-	// std::cout<<off.getName()<<"\n";
-	// std::cout<<idle.getName()<<"\n";
-
-	// std::cout<<turnOn.isValid(off)<<"\n";
-
-
 
 	//interaction has ports, condition and action
 	//for interaction to be enabled, ports must be enabled, condition must be true.

@@ -26,21 +26,20 @@ private:
 	bool * predicate;
 };
 
-class SystemPort
+class SystemPort: public Port
 {
 public:
-	SystemPort(FSM *m);
+	SystemPort(int i, FSM *m);
 	bool isEnabled();
-	int getID();
+	FSM * getMachine();
 private:
 	FSM * machine;
-	int ID;
 };
 
 class SystemInteraction
 {
 public:
-	SystemInteraction(SystemCondition sc, SystemAction sa, std::vector<SystemPort> * sp){};
+	SystemInteraction(SystemCondition sc, SystemAction sa, std::vector<SystemPort> * sp);
 	void execute();		   				//executes the FSM transitions that enable the ports
 	bool isEnabled();
 	bool portsEnabled();
@@ -58,6 +57,5 @@ public:
 private:
 	std::vector<SystemInteraction> *sysInteractions;
 };
-
 
 #endif

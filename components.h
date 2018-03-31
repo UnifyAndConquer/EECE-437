@@ -23,13 +23,13 @@ class Condition
 		virtual bool checkCondition() = 0;
 };
 
-#define COND_DECLARE(ConditionName, Expression)\
+#define COND_DECLARE(VariablesObject, ConditionName, Expression)\
  class ConditionName : public Condition {\
  	public:\
-		ConditionName(Variables * vars) { V = vars; }\
+		ConditionName(Variables * vars) { VariablesObject = vars; }\
 		bool checkCondition() { return Expression; }\
 	private:\
-		Variables * V;\
+		Variables * VariablesObject;\
  };\
 
 
@@ -40,42 +40,12 @@ public:
 	Port(int i);
 	void enable();
 	void disable();
-	bool isEnabled;
+	bool checkStatus();
 	int getID();
-private:
+protected:
 	int ID;
+	bool isEnabled;
 };
-
-// takes in pointer to function and "variables" template class, executes function on template class
-// template <class T>
-// class Action
-// {
-// public:
-// 	Action(){};
-// 	Action(void (* foo)(T & vars), T & vars)
-// 	{
-// 		T & variables = vars;
-// 		bar = foo;
-// 	}
-// 	void execute()				//executes function passed to action in constructor
-// 	{
-// 		bar(V);			//execute [bar]
-// 	}
-// 	T * variables;
-// private:
-// 	void (* bar)(T & vars);			//temporary function pointer used in execute
-// };
-
-
-// class Action			//kind of useless
-// {
-// public:
-// 	Action(){};
-// 	Action(void (* foo)()) {bar = foo;}
-// 	void execute() {bar();}
-// private:
-// 	void (* bar)();			//temporary function pointer used in execute
-// };
 
 class Transition
 {
@@ -93,7 +63,6 @@ private:
 	Port port;
 	Condition * condition;
 	void (* bar)();
-	//Action action;
 };
 
 class States: public std::list<State>		//w hek

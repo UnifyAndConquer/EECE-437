@@ -14,7 +14,6 @@ void resetTimer()
 
 void initialize()
 {
-	//std::cout<<vars.timer<<" variables not initialized \n";
 	V.timer = 0;
 	V.greenLed = 1;
 	std::cout<<"variables initialized: "<<V.timer<<"\n";
