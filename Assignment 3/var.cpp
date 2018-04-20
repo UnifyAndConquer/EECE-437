@@ -1,16 +1,14 @@
-
 #include <iostream>
-#include <string>
 using namespace std;
-#include <var.h>
+#include "var.h"
 
 string nameOfValue(TriValue v){
-  static string nameOfValueTable[]={"uu", "tt", "ff"};  //To Do: 
+  static string nameOfValueTable[]={"uu", "tt", "ff"};  //To Do:
   return nameOfValueTable[v];
 }
 
 ostream & operator << (ostream & os, Var & v) {
-  os << v.name ;//<< "has value " << nameOfValue(v.value) << endl;
+  os << v.name ;   //<< "has value " << nameOfValue(v.value) << endl;
   return os;
 }
 
@@ -19,7 +17,7 @@ ostream & operator << (ostream & os, TriValue val) {
   return os;
 }
 
-Var::Var(char n[]) : name (n), value (uu)
+Var::Var(string n) : name (n), value (uu)
 {
 }
 
@@ -27,6 +25,7 @@ void Var :: setValue(TriValue v) {
   value = v;
 }
 
-TriValue Var :: evaluate() {
+TriValue Var::evaluate() {
+  cout<<"variable evaluated\n";
   return value;
 }

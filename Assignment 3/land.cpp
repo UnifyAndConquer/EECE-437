@@ -1,11 +1,11 @@
 #include <iostream>
 #include <string>
 using namespace std;
-#include <land.h>
-#include <lor.h>
-#include <lnot.h>
+#include "land.h"
+#include "lor.h"
+#include "lnot.h"
 
-ostream & operator << (ostream & os, LAnd & v) {
+ostream & operator << (ostream & os, LAnd & v){
   os << "( "; // print left parenthesis
   if (v.leftV) {
     cout << *v.leftV;
@@ -16,6 +16,7 @@ ostream & operator << (ostream & os, LAnd & v) {
   } else if (v.leftNot) {
     cout << *v.leftNot;
   }
+  // cout << *v.leftExp;
   os << " & ";
   if (v.rightV) {
     cout << *v.rightV;
@@ -26,6 +27,7 @@ ostream & operator << (ostream & os, LAnd & v) {
   } else if (v.rightNot) {
     cout << *v.rightNot;
   }
+  // cout << *v.rightExp;
   os << " )";
   return os;
 }
@@ -40,21 +42,24 @@ LAnd::LAnd(void * left, void * right, LType lType, LType rType)
   rightOr(NULL),
   leftNot(NULL),
   rightNot(NULL)
-{
+ {
+//   leftExp = left;
+//   rightExp = right;
+
   // set the left operand pointer
 
   /////// replace conditions with enums (leftPointer = (enum(index)*)left)
 
   if (lType == VarT) {
     leftV = (Var*)left;
-  }else if (lType == LAndT) {
+  }else if (lType == LAndT) {   //if leftType is LAndT (enum value), then leftAnd pointer is cast to LAnd type (logical AND)
     leftAnd = (LAnd*)left;
   }else if (lType == LOrT) {
     leftOr = (LOr*)left;
   } else if (lType == LNotT){
     leftNot = (LNot *)left;
   }
-  // set the right operand pointer
+  //set the right operand pointer
   if (rType == VarT) {
     rightV = (Var*)right;
   }else if (rType == LAndT) {
@@ -66,11 +71,15 @@ LAnd::LAnd(void * left, void * right, LType lType, LType rType)
   }
 }
 
-TriValue LAnd :: evaluate() {
+TriValue LAnd::evaluate() {    //trivalue is just like bool, but with three values
   TriValue lval = uu;
   TriValue rval = uu;
   // call the left operand evaluate
-  if (leftV) {
+  if (leftV) {   //if leftV isn't NULL, i.e. has been set in the constructor
+
+/////// remove redundant conditions. could use polymorphism? then i'd just call leftPointer->evaluate() and it would figure out
+/////// what function to call. can make all "gates" inherit from one class expression, which could be a var aslo
+
     lval = leftV->evaluate();
   } else if (leftAnd) {
     lval = leftAnd->evaluate();
@@ -79,8 +88,9 @@ TriValue LAnd :: evaluate() {
   } else if (leftNot) {
     lval = leftNot->evaluate();
   }
+  //lval = leftExp->evaluate();
 
-  // call the right operand evaluate
+  //call the right operand evaluate
   if (rightV) {
     rval = rightV->evaluate();
   } else if (rightAnd) {
@@ -90,7 +100,9 @@ TriValue LAnd :: evaluate() {
   } else if (rightNot) {
     rval = rightNot->evaluate();
   }
-  //apply truth table.
+  //rval = rightExp->evaluate();
+
+  //apply truth table
   if (lval == ff || rval == ff) {
     return ff;
   }
