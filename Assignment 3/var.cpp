@@ -1,14 +1,27 @@
 #include <iostream>
 using namespace std;
+#include <typeinfo>
 #include "var.h"
 
 string nameOfValue(TriValue v){
-  static string nameOfValueTable[]={"uu", "tt", "ff"};  //To Do:
+  static string nameOfValueTable[]={"uu", "tt", "ff"};
   return nameOfValueTable[v];
 }
 
-ostream & operator << (ostream & os, Var & v) {
-  os << v.name ;   //<< "has value " << nameOfValue(v.value) << endl;
+ostream & operator << (ostream & os, Exp & e){
+  string type = typeid(e).name();
+  if(type == "3Var")
+  {
+    os << e.name;
+  }
+  else
+  {
+    os << "( ";
+    cout << *e.leftExp;
+    os << " & ";
+    cout << *e.rightExp;
+    os << " )";
+  }
   return os;
 }
 
@@ -17,8 +30,10 @@ ostream & operator << (ostream & os, TriValue val) {
   return os;
 }
 
-Var::Var(string n) : name (n), value (uu)
+Var::Var(string n) //: name (n), value (uu)
 {
+  name = n;
+  value = uu;
 }
 
 void Var :: setValue(TriValue v) {
@@ -26,6 +41,5 @@ void Var :: setValue(TriValue v) {
 }
 
 TriValue Var::evaluate() {
-  cout<<"variable evaluated\n";
   return value;
 }

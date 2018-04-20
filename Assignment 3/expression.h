@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 //#include "var.h"
 
 enum TriValue {
@@ -7,9 +8,9 @@ enum TriValue {
 
 struct Exp
 {
-  Exp * leftExp;
-  Exp * rightExp;
-  
+  string name;
+  Exp * leftExp;      //pointer to left side expression
+  Exp * rightExp;     //pointer to right side expression
+
   virtual TriValue evaluate() = 0;
-  //virtual void print() = 0;
 };

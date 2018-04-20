@@ -1,6 +1,10 @@
 ///// for testing peurpeuseuz
+//made var inherit from Exp so that i could call evaluate only once
+//make dummyAND and dummyOR classes to test constructor automatic typecasting and evaluate
+
 #include <iostream>
 #include <string>
+#include <typeinfo>
 using namespace std;
 
 #include "expression.h"
@@ -13,8 +17,6 @@ struct dummyOR : Exp
 {
   dummyOR(Exp * left, Exp * right)
   {
-    // leftExp = (Exp*)left;
-    // rightExp = (Exp*)right;
     leftExp = left;
     rightExp = right;
   }
@@ -46,11 +48,8 @@ struct dummyAND : Exp
 {
   dummyAND(Exp * left, Exp * right)
   {
-    // leftExp = (Exp*)left;
-    // rightExp = (Exp*)right;
     leftExp = left;
     rightExp = right;
-
   }
 
   TriValue evaluate()
@@ -85,9 +84,9 @@ int main(int argc, char ** argv)
   dummyOR e1(&v1, &v2);
   dummyAND e2(&v1, &e1);
 
-  v1.setValue(tt);
-  v2.setValue(ff);
+  string type = typeid(v1).name();
 
-  TriValue val = e2.evaluate();
+  if(type == "3Var")
+    cout<<"ok"<<endl;
 
 }
