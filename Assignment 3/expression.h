@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 using namespace std;
+static std::vector<string> varList;
 
 enum TriValue {
   uu, tt, ff,
@@ -14,6 +15,7 @@ struct Exp    //expression object from which all logical operations inherit, inc
   Exp * rightExp;     //pointer to right side expression
 
   virtual TriValue evaluate() = 0;
+  virtual void getVars() = 0;
 };
 
 #define EXP_DECLARE(type)\
@@ -75,5 +77,10 @@ struct type : Exp {\
       return ff;\
     else\
       return uu;\
+  }\
+\
+  void getVars() {\
+    leftExp->getVars();\
+    rightExp->getVars();\
   }\
 };\

@@ -56,6 +56,7 @@ LVAR::LVAR(string n) //: name (n), value (uu)
 {
   name = n;
   value = uu;
+  //was_called = 0;
 }
 
 void LVAR :: setValue(TriValue v) {
@@ -64,4 +65,19 @@ void LVAR :: setValue(TriValue v) {
 
 TriValue LVAR::evaluate() {
   return value;
+}
+
+void LVAR::getVars()
+{
+  bool isDuplicate = 0;
+  for(int i=0; i<varList.size(); i++)
+  {
+    if(varList[i] == name)
+      isDuplicate = 1;
+  }
+  if(!isDuplicate)
+  {
+    varList.push_back(name);
+    cout<<name<<endl;
+  }
 }

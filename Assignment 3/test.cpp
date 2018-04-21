@@ -24,6 +24,10 @@ int main(int argc, char ** argv)
 
   TriValue val = o3.evaluate();
   cout << o3 << "evaluates to " << val << endl;
+
+  o3.getVars();
+
+  o3.getVars();
 }
 
 // struct dummyOR : Exp
