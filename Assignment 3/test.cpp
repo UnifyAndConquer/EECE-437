@@ -3,84 +3,75 @@
 //made var inherit from Exp so that i could call evaluate only once
 //make dummyAND and dummyOR classes to test constructor automatic typecasting and evaluate
 
-#include <iostream>
 #include <string>
 #include <typeinfo>
-using namespace std;
-
-//#include "expression.h"
-
-// LAND   tfuffuuuu
-// LOR    ttutfuuuu
-// LNAND  ftuttuuuu
-// LNOR   ffuftuuuu
-// LXOR   ftutfuuuu
-// LXNOR  tfuftuuuu
-// LNOT   ftu
-// LEQ    tfu
-// LIMP   tfuttuuuu
-
-enum TriValue {
-  uu, tt, ff,
-};
-
-#define TEST(name)\
- struct name {\
-   string code;\
-   TriValue evaluate(TriValue left, TriValue right = uu)\
-   {\
-     if(#name == "LAND")\
-       code = "tfuffuuuu";\
-     else if(#name == "LOR")\
-       code = "ttutfuuuu";\
-     else if(#name == "LNAND")\
-       code = "ftuttuuuu";\
-     else if(#name == "LNOR")\
-       code = "ffuftuuuu";\
-     else if(#name == "LXOR")\
-       code = "ftutfuuuu";\
-     else if(#name == "LXNOR")\
-       code = "tfuftuuuu";\
-     else if(#name == "LNOT")\
-       code = "ffftttuuu";\
-     else if(#name == "LEQ")\
-       code = "tttfffuuu";\
-     else if(#name == "LIMP")\
-       code = "tfuttuuuu";\
-     else\
-       code = "xxxxxxxxx";\
-\
-     int index = 0;\
-\
-     if (left == ff)\
-       index += 3;\
-\
-     else if (left == uu)\
-       index += 6;\
-\
-     if(right == ff)\
-       index += 1;\
-\
-     else if(right == uu)\
-       index += 2;\
-\
-     char output = code[index];\
-\
-     if(output == 't')\
-       return tt;\
-     else if(output == 'f')\
-       return ff;\
-     else\
-       return uu;\
-   }\
- };\
+#include "var.h"
 
 int main(int argc, char ** argv)
 {
-  TEST(LNOT);
-  LNOT not1;
-  cout<<not1.evaluate(tt)<<endl;
+  Var v1("x0");
+  Var v2("x1");
+
+  EXP_DECLARE(LOR);
+  LOR o1(&v1, &v2);
+
+  cout<<o1.leftExp<<endl;
+
+  // cout<<o1<<endl;
 }
+
+// #define TEST(name)\
+//  struct name {\
+//    string code;\
+//    TriValue evaluate(TriValue left, TriValue right = uu)\
+//    {\
+//      if(#name == "LAND")\
+//        code = "tfuffuuuu";\
+//      else if(#name == "LOR")\
+//        code = "ttutfuuuu";\
+//      else if(#name == "LNAND")\
+//        code = "ftuttuuuu";\
+//      else if(#name == "LNOR")\
+//        code = "ffuftuuuu";\
+//      else if(#name == "LXOR")\
+//        code = "ftutfuuuu";\
+//      else if(#name == "LXNOR")\
+//        code = "tfuftuuuu";\
+//      else if(#name == "LNOT")\
+//        code = "ffftttuuu";\
+//      else if(#name == "LEQ")\
+//        code = "tttfffuuu";\
+//      else if(#name == "LIMP")\
+//        code = "tfuttuuuu";\
+//      else\
+//        code = "xxxxxxxxx";\
+// \
+//      int index = 0;\
+// \
+//      if (left == ff)\
+//        index += 3;\
+// \
+//      else if (left == uu)\
+//        index += 6;\
+// \
+//      if(right == ff)\
+//        index += 1;\
+// \
+//      else if(right == uu)\
+//        index += 2;\
+// \
+//      char output = code[index];\
+// \
+//      if(output == 't')\
+//        return tt;\
+//      else if(output == 'f')\
+//        return ff;\
+//      else\
+//        return uu;\
+//    }
+//  };
+
+
 
 // tt tt 0
 // tt ff 1

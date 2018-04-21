@@ -2,12 +2,12 @@
 #include <string>
 using namespace std;
 
-// #include "expression.h"
+#include "expression.h"
 
-#include "var.h"
-#include "land.h"
-#include "lor.h"
-#include "lnot.h"
+// #include "var.h"
+// #include "land.h"
+// #include "lor.h"
+// #include "lnot.h"
 
 int
 main() {
