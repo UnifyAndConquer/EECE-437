@@ -1,15 +1,8 @@
 #pragma once
 #include "var.h"
-class LAnd;
-class LOr;
 
-struct LNot {
-  Var * leftV;
-  LAnd * leftAnd;
-  LOr * leftOr;
-  LNot * leftNot;
-  LNot(void * left, LType lType);
+struct LNot : Exp
+{
+  LNot(Exp * left);
   TriValue evaluate();
 };
-
-ostream & operator << (ostream & os, LNot & f);

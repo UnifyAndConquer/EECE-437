@@ -2,10 +2,6 @@
 #include <string>
 #include "expression.h"
 
-// enum TriValue {
-//   uu, tt, ff,
-// };
-
 enum LType{
   VarT, LAndT, LOrT, LNotT   //var type, LAnd type, etc.
 };

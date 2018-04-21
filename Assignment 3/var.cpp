@@ -9,10 +9,18 @@ string nameOfValue(TriValue v){
 }
 
 ostream & operator << (ostream & os, Exp & e){
-  string type = typeid(e).name();
-  if(type == "3Var")
+  string typex = typeid(e).name();
+  string type = typex.erase(0,1);
+
+  if(type == "Var")
   {
     os << e.name;
+  }
+  else if(type == "LNot")
+  {
+    os << "( !";
+    cout << *e.leftExp;
+    os << " )";
   }
   else
   {

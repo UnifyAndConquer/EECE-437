@@ -1,4 +1,5 @@
 ///// for testing peurpeuseuz
+
 //made var inherit from Exp so that i could call evaluate only once
 //make dummyAND and dummyOR classes to test constructor automatic typecasting and evaluate
 
