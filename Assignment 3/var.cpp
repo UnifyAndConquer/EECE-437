@@ -16,7 +16,7 @@ ostream & operator << (ostream & os, Exp & e){
   {
     os << e.name;
   }
-  else if(type == "LNot")
+  else if(type == "LNot" || type == "LEq")
   {
     os << "( !";
     cout << *e.leftExp;
