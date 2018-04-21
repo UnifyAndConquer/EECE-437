@@ -8,10 +8,10 @@ enum LType{
 
 string nameOfValue(TriValue v);
 
-struct Var : Exp
+struct LVAR : Exp
 {
   TriValue value;
-  Var(string c);
+  LVAR(string c);
   void setValue(TriValue v);
   TriValue evaluate();
 };

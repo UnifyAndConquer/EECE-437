@@ -9,24 +9,38 @@ string nameOfValue(TriValue v){
 }
 
 ostream & operator << (ostream & os, Exp & e){
-  string typex = typeid(e).name();
-  string type = typex.erase(0,1);
+  string type = typeid(e).name();
 
-  if(type == "Var")
+  if(type == "4LVAR")
   {
     os << e.name;
   }
-  else if(type == "LNot")
+  else if(type == "Z4mainE4LNOT")   //unary operators
   {
     os << "( !";
     cout << *e.leftExp;
     os << " )";
   }
-  else
+  else        //binary operators
   {
     os << "( ";
     cout << *e.leftExp;
-    os << " & ";
+
+    if(type == "Z4mainE4LAND")
+      os << " & ";
+    else if(type == "Z4mainE3LOR")
+      os << " || ";
+    else if(type == "Z4mainE5LNAND")
+      os << " !& ";
+    else if(type == "Z4mainE4LNOR")
+      os << " !|| ";
+    else if(type == "Z4mainE4LXOR")
+      os << " x|| ";
+    else if(type == "Z4mainE5LXNOR")
+      os << " x!|| ";
+    else if(type == "Z4mainE4LIMP")
+      os << " => ";
+
     cout << *e.rightExp;
     os << " )";
   }
@@ -38,16 +52,16 @@ ostream & operator << (ostream & os, TriValue val) {
   return os;
 }
 
-Var::Var(string n) //: name (n), value (uu)
+LVAR::LVAR(string n) //: name (n), value (uu)
 {
   name = n;
   value = uu;
 }
 
-void Var :: setValue(TriValue v) {
+void LVAR :: setValue(TriValue v) {
   value = v;
 }
 
-TriValue Var::evaluate() {
+TriValue LVAR::evaluate() {
   return value;
 }

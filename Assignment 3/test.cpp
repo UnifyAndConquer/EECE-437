@@ -9,13 +9,21 @@
 
 int main(int argc, char ** argv)
 {
-  Var v1("x0");
-  Var v2("x1");
+  LVAR v1("x0");
+  LVAR v2("x1");
 
   EXP_DECLARE(LOR);
   LOR o1(&v1, &v2);
+  EXP_DECLARE(LAND);
+  LAND o2(&v1, &v2);
 
-  cout<<o1<<endl;
+  LOR o3(&o1, &o2);
+
+  v1.setValue(ff);
+  v2.setValue(ff);
+
+  TriValue val = o3.evaluate();
+  cout << o3 << "evaluates to " << val << endl;
 }
 
 // struct dummyOR : Exp

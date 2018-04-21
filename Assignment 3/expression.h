@@ -18,7 +18,7 @@ struct Exp    //expression object from which all logical operations inherit, inc
 
 #define EXP_DECLARE(type)\
 struct type : Exp {\
-  type(Exp * left, Exp * right){\
+  type(Exp * left, Exp * right = NULL){\
       rightExp = right;\
       leftExp = left;\
     }\
