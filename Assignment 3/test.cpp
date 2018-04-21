@@ -15,10 +15,41 @@ int main(int argc, char ** argv)
   EXP_DECLARE(LOR);
   LOR o1(&v1, &v2);
 
-  cout<<o1.leftExp<<endl;
-
-  // cout<<o1<<endl;
+  cout<<o1<<endl;
 }
+
+// struct dummyOR : Exp
+// {
+//   dummyOR(Exp * left, Exp * right)
+//   {
+//     leftExp = left;
+//     rightExp = right;
+//   }
+//
+//   TriValue evaluate()
+//   {
+//     TriValue lval = uu;
+//     TriValue rval = uu;
+//
+//     cout<<"evaluating left side of OR: \n";
+//     lval = leftExp->evaluate();
+//     cout<<"evaluating right side of OR: \n";
+//     rval = rightExp->evaluate();
+//
+//     if (lval == tt || rval == tt) {
+//       cout<<"tt\n";
+//       return tt;
+//     }
+//     if (lval == uu || rval == uu) {
+//       cout<<"uu\n";
+//       return uu;
+//     }
+//     cout<<"ff\n";
+//     return ff;
+//   }
+// };
+
+
 
 // #define TEST(name)\
 //  struct name {\
@@ -131,36 +162,7 @@ int main(int argc, char ** argv)
 
 
 
-// struct dummyOR : Exp
-// {
-//   dummyOR(Exp * left, Exp * right)
-//   {
-//     leftExp = left;
-//     rightExp = right;
-//   }
-//
-//   TriValue evaluate()
-//   {
-//     TriValue lval = uu;
-//     TriValue rval = uu;
-//
-//     cout<<"evaluating left side of OR: \n";
-//     lval = leftExp->evaluate();
-//     cout<<"evaluating right side of OR: \n";
-//     rval = rightExp->evaluate();
-//
-//     if (lval == tt || rval == tt) {
-//       cout<<"tt\n";
-//       return tt;
-//     }
-//     if (lval == uu || rval == uu) {
-//       cout<<"uu\n";
-//       return uu;
-//     }
-//     cout<<"ff\n";
-//     return ff;
-//   }
-// };
+
 //
 // struct dummyAND : Exp
 // {

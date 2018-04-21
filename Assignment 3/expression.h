@@ -13,18 +13,15 @@ struct Exp    //expression object from which all logical operations inherit, inc
   Exp * leftExp;      //pointer to left side expression
   Exp * rightExp;     //pointer to right side expression
 
-  //Exp(Exp * left, Exp * right) {leftExp = left; rightExp = right;}
   virtual TriValue evaluate() = 0;
 };
 
 #define EXP_DECLARE(type)\
 struct type : Exp {\
-\
   type(Exp * left, Exp * right){\
-      rightExp == right;\
-      leftExp == left;\
-      cout<<rightExp<<endl;\
-      cout<<leftExp<<endl;}\
+      rightExp = right;\
+      leftExp = left;\
+    }\
 \
   TriValue evaluate(){\
     string code;\
